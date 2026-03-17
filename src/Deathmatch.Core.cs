@@ -122,14 +122,7 @@ public partial class Deathmatch
 
     public void HandlePlayerDeath(IPlayer attacker, IPlayer victim)
     {
-        // TODO This is crashing right now.
-        // var record = attacker.Controller.DamageServices?.DamageList.FirstOrDefault(r =>
-        //     r.PlayerControllerDamager.Value?.SteamID == victim.SteamID
-        // );
-        var damageServices = attacker.Controller.DamageServices;
-        if (damageServices == null)
-            return;
-        var record = new DamageListIterator(damageServices.Address).FirstOrDefault(r =>
+        var record = attacker.Controller.DamageServices?.DamageList.FirstOrDefault(r =>
             r.PlayerControllerDamager.Value?.SteamID == victim.SteamID
         );
         if (record != null)
