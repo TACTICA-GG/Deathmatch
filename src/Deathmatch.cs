@@ -16,7 +16,7 @@ namespace Deathmatch;
     Version = "1.0.0",
     Name = "Deathmatch",
     Author = "Ian Lucas",
-    Description = "Free-for-all deathmatch with configurable weapons."
+    Description = "A SwiftlyS2 plugin for Deathmatch/FFA gamemode"
 )]
 public partial class Deathmatch(ISwiftlyCore core) : BasePlugin(core)
 {
@@ -25,7 +25,7 @@ public partial class Deathmatch(ISwiftlyCore core) : BasePlugin(core)
 
     public override void Load(bool hotReload)
     {
-        Swiftly.Initialize();
+        Runtime.Initialize();
         ConVars.Initialize();
         Core.GameData.ApplyPatch("RandomSpawnPatch");
         Core.GameData.ApplyPatch("DeathmatchScorePatch");
@@ -48,11 +48,17 @@ public partial class Deathmatch(ISwiftlyCore core) : BasePlugin(core)
                 (context) =>
                 {
                     var player = context.Sender;
-                    if (player != null)
-                        HandlePlayerWeaponRequest(player, weapon);
+                    player?.RequestWeapon(weapon);
                 }
             );
         HandleModesFileChanged();
+    }
+
+    public void HandleModesFileChanged()
+    {
+        var modes = Modes.Load();
+        if (modes != null)
+            Rules.SetModes(modes);
     }
 
     public override void Unload() { }
