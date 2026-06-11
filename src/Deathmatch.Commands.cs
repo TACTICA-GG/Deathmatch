@@ -13,19 +13,9 @@ public partial class Deathmatch
     [Command("guns")]
     public void OnGunsCommand(ICommandContext context)
     {
-        var mode = Rules.GetCurrentMode();
-        context.Sender?.SendChat(
-            Core.Localizer[
-                "dm.guns",
-                Rules.GetChatPrefix(),
-                string.Join(
-                    "[white], ",
-                    (mode?.GetWeapons() ?? [])
-                        .Select(g => $"[lime]!{g.Aliases[0]}")
-                        .Concat(mode?.HasPrimary == true ? ["[lime]!noprimary"] : [])
-                )
-            ]
-        );
+        var player = context.Sender;
+        if (player != null)
+            ShowGunsMenu(player);
     }
 
     [Command("noprimary")]
